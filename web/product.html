@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{{ . }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5 pt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">La liste des produits</h3>
+            </div>
+            <div class="col-md-12 d-flex justify-content-between mb-5">
+                <a href="/" class="btn"
+                    style="padding: 1em 1em; background-color: rgb(64, 65, 63); color: white;">Retour au menu</a>
+                <input onkeyup="search(this)" class="form-control form-control-lg mx-2" type="text"
+                    placeholder="Recherche par catégorie" aria-label=".form-control-lg example">
+                <button type="button" class="btn"
+                    style="padding: 1em 1em; background-color: rgb(68, 141, 8); color: white;"
+                    onclick="create()">Ajouter un produit</button>
+            </div>
+            <div class="col-md-12 bg-light py-5">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Catégorie</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- <form> -->
+                    <div class="modal-body" id="body">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Catégorie de produit</label>
+                            <select class="form-select" id="product_category" name="product_category"
+                                aria-label="Default select example">
+                                <option selected>Sélectionnez une catégorie</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Nom du produit</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Ecrire ici...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Description</label>
+                            <textarea name="description" id="description" class="form-control"
+                                placeholder="Ecrire ici..." rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Prix</label>
+                            <input type="number" name="price" id="price" class="form-control"
+                                placeholder="Ecrire ici...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Quantité</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control"
+                                placeholder="Ecrire ici...">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" id="submit"
+                            style="padding: 0.4em 0.4em; background-color: rgb(68, 141, 8); color: white;"
+                            onclick="submit()" class="btn">Enregistrer</button>
+                    </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Suppression de données</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- <form> -->
+                    <div class="modal-body" id="body">
+                        <p>La Suppression de données est irrévocable.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" id="submit"
+                            style="padding: 0.4em 0.4em; background-color: rgb(68, 141, 8); color: white;"
+                            onclick="submit()" class="btn">Supprimer</button>
+                    </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="DetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Plus de détails</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- <form> -->
+                    <div class="modal-body" id="body">
+                        <table class="table table-striped">
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <td scope="col"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" id="submit"
+                            style="padding: 0.4em 0.4em; background-color: rgb(68, 141, 8); color: white;"
+                            onclick="submit()" class="btn">Supprimer</button>
+                    </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        var baseAPI = 'http://localhost:8090/product/'
+        var type_method = "";
+        var id = "";
+        var product_categories = [];
+        var products = [];
+
+
+        function search(e) {
+            var value = $(e).val();
+            console.log(value);
+            if (value) {
+                category = product_categories.filter((el) =>  el.name.toLowerCase().includes(value.toLowerCase()));
+            console.log(category);
+
+                if (category) {
+                    var category_ids = category.map(function (value, index, array) {
+                        return value.id;
+                    });
+
+                    products = products.filter((el) => category_ids.includes(el.product_category_id));
+                    fillTable(products);
+                }
+            } else {
+                getData();
+            }
+        }
+
+        function getData() {
+            $.ajax({
+                method: "Get",
+                url: baseAPI + "get",
+                dataType: "json"
+            }).done(function (response) {
+                products = response;
+                fillTable(products);
+            });
+        }
+
+        function fillTable(products) {
+            $("tbody").empty();
+            $.each(products, function (index, element) {
+                category = product_categories.find((el) => el.id == element.id);
+                var tr = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${category.name}</td>
+                    <td>${element.name}</td>
+                    <td>${element.price}</td>
+                    <td>${element.quantity}</td>
+                    <td>
+                        <button data-id="${element.id}" onclick="edit(this)" class="btn" style="padding: 0.2em 0.2em; background-color: rgb(20, 75, 224); font-size: 12px; color: white;">Modifier</button>
+                        <button data-id="${element.id}" onclick="destroy(this)" class="btn" style="padding: 0.2em 0.2em; background-color: rgb(218, 40, 40); font-size: 12px; color: white;">Supprimer</button>
+                    </td>
+                 </tr>`;
+                $("tbody").append(tr);
+            });
+        }
+
+        function getCategoryData() {
+            $.ajax({
+                method: "Get",
+                url: "http://localhost:8090/product-category/get",
+                dataType: "json"
+            }).done(function (response) {
+                product_categories = response;
+                $("tbody").empty();
+                $.each(response, function (index, element) {
+                    var option = `<option value="${element.id}">${element.name}</option>`;
+                    $("#product_category").append(option);
+                });
+            });
+        }
+
+        function create() {
+            type_method = "c"
+            $("#title").html("Création de produit")
+            $('#formModal').modal('toggle');
+            $('#formModal').modal('show');
+        }
+
+        function edit(e) {
+            type_method = "u"
+            console.log($(e).data("id"))
+            id = parseInt($(e).data("id"));
+            $.ajax({
+                method: "GET",
+                url: baseAPI + "get/" + id,
+                dataType: "json",
+            }).done(function (response) {
+                $('#product_category').val(response.product_category_id)
+                $('#name').val(response.name)
+                $('#description').val(response.description)
+                $('#price').val(response.price)
+                $('#quantity').val(response.quantity)
+            });
+
+            $("#title").html("Modification de produit")
+            $('#formModal').modal('toggle');
+            $('#formModal').modal('show');
+        }
+
+        function destroy(e) {
+            id = parseInt($(e).data("id"));
+            type_method = "d"
+            $("#title").html("Supprssion de ligne")
+            $('#DeleteModal').modal('toggle');
+            $('#DeleteModal').modal('show');
+        }
+
+        function submit() {
+            if (type_method == "c") {
+                let data = {};
+                data.product_category = $("#product_category").val();
+                data.name = $("#name").val();
+                data.description = $("#description").val();
+                data.price = $("#price").val();
+                data.quantity = $("#quantity").val();
+
+                $.ajax({
+                    method: "POST",
+                    url: baseAPI + "create",
+                    data: data,
+                    dataType: "json",
+                }).done(function (response) {
+                    getData();
+                    $('#formModal').modal('hide');
+                });
+            }
+            else if (type_method == "u") {
+                let data = {};
+                data.product_category = $("#product_category").val();
+                data.name = $("#name").val();
+                data.description = $("#description").val();
+                data.price = $("#price").val();
+                data.quantity = $("#quantity").val();
+
+                $.ajax({
+                    method: "PUT",
+                    url: baseAPI + "update/" + id,
+                    data: data,
+                    dataType: "json",
+                }).done(function (response) {
+                    getData();
+                    $('#formModal').modal('hide');
+                });
+            }
+            else if (type_method == "r") {
+                $.ajax({
+                    method: "GET",
+                    url: baseAPI + "get/" + id,
+                    dataType: "json",
+                }).done(function (response) {
+                    getData();
+                    $('#formModal').modal('hide');
+                });
+            } else {
+                $.ajax({
+                    method: "DELETE",
+                    url: baseAPI + "delete/" + id,
+                    dataType: "json",
+                }).done(function (response) {
+                    getData();
+                    $('#DeleteModal').modal('hide');
+                });
+            }
+        }
+        getCategoryData();
+        getData();
+    </script>
+</body>
+
+</html>
